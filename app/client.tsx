@@ -116,7 +116,14 @@ export default function Client() {
       video.muted = true;
       video.playsInline = true;
       video.srcObject = stream;
-      await video.play().catch(() => {});
+
+      await new Promise<void>((resolve) => {
+        video!.addEventListener("loadedmetadata", () => resolve(), { once: true });
+        video!.play().catch(() => resolve());
+      });
+
+      // Wait for a decoded frame so videoWidth/videoHeight are non-zero
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
       stream.getVideoTracks()[0]?.addEventListener("ended", stop);
 

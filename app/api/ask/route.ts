@@ -10,7 +10,8 @@ export async function POST(req: Request) {
     if (!text) return NextResponse.json({ answer: "?" });
     const answer = await answerFromText(text);
     return NextResponse.json({ answer });
-  } catch {
+  } catch (err) {
+    console.error("[ask]", err);
     return NextResponse.json({ answer: "?" }, { status: 200 });
   }
 }

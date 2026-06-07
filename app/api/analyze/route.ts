@@ -10,7 +10,8 @@ export async function POST(req: Request) {
     if (!image) return NextResponse.json({ answer: "?" });
     const answer = await answerFromImage(image);
     return NextResponse.json({ answer });
-  } catch {
+  } catch (err) {
+    console.error("[analyze]", err);
     return NextResponse.json({ answer: "?" }, { status: 200 });
   }
 }

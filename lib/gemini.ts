@@ -15,7 +15,9 @@ function normalize(raw: string): string {
 
 const GEN_CONFIG = {
   temperature: 0,
-  maxOutputTokens: 4,
+  maxOutputTokens: 64,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  thinkingConfig: { thinkingBudget: 0 } as any,
 };
 
 export async function answerFromImage(imageBase64: string): Promise<string> {
@@ -29,7 +31,8 @@ export async function answerFromImage(imageBase64: string): Promise<string> {
   const result = await model.generateContent([
     { inlineData: { data: imageBase64, mimeType: "image/jpeg" } },
   ]);
-  return normalize(result.response.text());
+  const text = result.response.text();
+  return normalize(text);
 }
 
 export async function answerFromText(text: string): Promise<string> {
@@ -41,5 +44,6 @@ export async function answerFromText(text: string): Promise<string> {
   });
 
   const result = await model.generateContent(text);
-  return normalize(result.response.text());
+  const raw = result.response.text();
+  return normalize(raw);
 }
