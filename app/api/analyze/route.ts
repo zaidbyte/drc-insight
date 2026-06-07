@@ -7,11 +7,11 @@ export const dynamic = "force-dynamic";
 export async function POST(req: Request) {
   try {
     const { image } = (await req.json()) as { image?: string };
-    if (!image) return NextResponse.json({ answer: "?" });
+    if (!image) return NextResponse.json({ answer: "" });
     const answer = await answerFromImage(image);
     return NextResponse.json({ answer });
   } catch (err) {
     console.error("[analyze]", err);
-    return NextResponse.json({ answer: "?" }, { status: 200 });
+    return NextResponse.json({ answer: "" }, { status: 200 });
   }
 }

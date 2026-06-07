@@ -15,7 +15,8 @@ async function copyToClipboard(text: string) {
 }
 
 function setAnswer(answer: string, latestRef: React.MutableRefObject<string>) {
-  const value = (answer || "?").trim().slice(0, 1).toUpperCase() || "?";
+  const value = answer.trim();
+  if (!value) return; // no question visible — keep previous title
   latestRef.current = value;
   document.title = value;
   void copyToClipboard(value);
